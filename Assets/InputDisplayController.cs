@@ -98,7 +98,7 @@ public class InputDisplayController : MonoBehaviour
         newInputString = input;
         if (newInputString != inputString)
         {
-            inputString = newInputString;
+            inputString = newInputString; //Comment
         }
     }
 }
