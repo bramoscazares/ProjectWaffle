@@ -647,13 +647,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player-Version1
       objectReference: {fileID: 0}
+    - target: {fileID: 2221969947717666902, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985099545563686170, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985099545563686170, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985099545563686170, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3990747915735903534, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3990747915735903534, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.47
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3990747915735903534, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -686,6 +702,30 @@ PrefabInstance:
     - target: {fileID: 3990747915735903534, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4591771764133689517, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4591771764133689517, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1298070645
+      objectReference: {fileID: 0}
+    - target: {fileID: 5593509308966602482, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5593509308966602482, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1298070645
+      objectReference: {fileID: 0}
+    - target: {fileID: 7071096238805149727, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -239
+      objectReference: {fileID: 0}
+    - target: {fileID: 7071096238805149727, guid: 995f3531b6d94451ebdcdc0181d6b01c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -170
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
