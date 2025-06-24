@@ -5015,7 +5015,7 @@ GameObject:
   - component: {fileID: 8408995258161426562}
   - component: {fileID: 8730242709513990757}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: DinerMap2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
