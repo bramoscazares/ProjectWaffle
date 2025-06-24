@@ -66,19 +66,52 @@ public class PlayerController : MonoBehaviour
         {
             isWalking = true;
         }
-        
+
 
 
         movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         movement.Normalize();
 
-        
 
-        
+
+
 
 
 
     }
+    
+    void HandleInteraction()
+{
+    if (Input.GetKeyDown(KeyCode.E))
+    {
+        Vector2 direction = lastMoveDirection;
+        
+        // Default facing down if no movement yet
+        if (direction == Vector2.zero)
+        {
+            direction = Vector2.down;
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1.5f);
+
+        Debug.DrawRay(transform.position, direction * 1.5f, Color.red, 1f);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("Ray hit: " + hit.collider.name);
+
+            Customer customer = hit.collider.GetComponent<Customer>();
+            if (customer != null)
+            {
+                customer.TakeOrder();
+            }
+        }
+        else
+        {
+            Debug.Log("Raycast hit nothing.");
+        }
+    }
+}
 
 
 
