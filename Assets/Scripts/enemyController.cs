@@ -43,6 +43,9 @@ public class enemyController : MonoBehaviour
     void AttackPlayer()
     {
         player.GetComponent<BattleHealth>().TakeDamage(1);
+        print("Player hit! 1 damage taken.");
+
+        print("Player health: " + player.GetComponent<BattleHealth>().health);
     }
 }
 

@@ -16,7 +16,7 @@ public class BattleHealth : MonoBehaviour
     private int heartCount = 3;
     private bool isGameOver = false;
 
-    float health, maxHealth = 3f;
+    public float health, maxHealth = 3f;
     void Start()
     {
         Resethearts();
@@ -39,7 +39,7 @@ public class BattleHealth : MonoBehaviour
         Debug.Log("Strike added. Current strike count: " + heartCount);
 
         // Display strikes visually
-        if (heartCount == 3 && heart3 != null)
+        if (heartCount == 3 && heart3 != null) heart3.enabled = false;
         if (heartCount == 2 && heart2 != null) heart2.enabled = false;
         if (heartCount == 1 && heart1 != null) heart1.enabled = false;
 
@@ -61,18 +61,24 @@ public class BattleHealth : MonoBehaviour
     public void Resethearts()
     {
         heartCount = 3;
+        health = maxHealth;
         isGameOver = false;
 
-        if (heart1 != null) heart1.enabled = false;
-        if (heart2 != null) heart2.enabled = false;
-        if (heart3 != null) heart3.enabled = false;
+        if (heart1 != null) heart1.enabled = true;
+        if (heart2 != null) heart2.enabled = true;
+        if (heart3 != null) heart3.enabled = true;
 
     }
 
     public void RestartGame()
     {
+
+        Resethearts();
         Time.timeScale = 1f; // Resume the game
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene
+        
+
+        
     }
 
     public void TakeDamage(float damage)
@@ -80,7 +86,8 @@ public class BattleHealth : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            TriggerGameOver();
+            //Destroy(gameObject);
         }
     }
     
