@@ -13,12 +13,16 @@ public class BattleHealth : MonoBehaviour
     public GameObject gameOverPanel;
     public Text gameOverText;
 
+    public GameObject HealthPanel;
+    public Text healthText;
+
     private int heartCount = 3;
     private bool isGameOver = false;
 
     public float health, maxHealth = 3f;
     void Start()
     {
+        
         Resethearts();
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         health = maxHealth;
@@ -27,6 +31,7 @@ public class BattleHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        updateHealth();
         if (isGameOver && Input.GetKeyDown(KeyCode.R))
         {
             RestartGame();
@@ -76,9 +81,9 @@ public class BattleHealth : MonoBehaviour
         Resethearts();
         Time.timeScale = 1f; // Resume the game
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene
-        
 
-        
+
+
     }
 
     public void TakeDamage(float damage)
@@ -89,6 +94,11 @@ public class BattleHealth : MonoBehaviour
             TriggerGameOver();
             //Destroy(gameObject);
         }
+    }
+
+    void updateHealth()
+    {
+        healthText.text = "Health: " + health.ToString();
     }
     
 }

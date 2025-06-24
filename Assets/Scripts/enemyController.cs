@@ -8,10 +8,20 @@ public class enemyController : MonoBehaviour
     public float speed;
     private float distance;
     float health, maxHealth = 3f;
-    public Transform Aim;
+
+    public GameObject Aim;
+    public Transform AimTransform;
+    private bool isAttacking = false;
+    private float atkDurarion = 0.3f;
+    private float atkTimer = 0f;
     void Start()
     {
         health = maxHealth;
+        if (Aim != null)
+        {
+            AimTransform = Aim.transform;
+        }
+
     }
 
     // Update is called once per frame
@@ -23,7 +33,9 @@ public class enemyController : MonoBehaviour
         transform.position = Vector2.MoveTowards
         (this.transform.position, player.transform.position, speed * Time.deltaTime);
 
-        Aim.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        CheckMeleeTimer();
+
+        AimTransform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
         if (distance < 1.5f)
         {
@@ -42,10 +54,38 @@ public class enemyController : MonoBehaviour
 
     void AttackPlayer()
     {
-        player.GetComponent<BattleHealth>().TakeDamage(1);
-        print("Player hit! 1 damage taken.");
+        OnAttack();
 
-        print("Player health: " + player.GetComponent<BattleHealth>().health);
+    }
+    
+
+    void OnAttack()
+    {
+        if (!isAttacking)
+        {
+            Aim.SetActive(true);
+            isAttacking = true;
+            player.GetComponent<BattleHealth>().TakeDamage(1);
+            print("Player hit! 1 damage taken.");
+
+            print("Player health: " + player.GetComponent<BattleHealth>().health);
+
+        }
+    }
+
+
+    void CheckMeleeTimer()
+    {
+        if (isAttacking)
+        {
+            atkTimer += Time.deltaTime;
+            if (atkTimer >= atkDurarion)
+            {
+                atkTimer = 0;
+                isAttacking = false;
+                Aim.SetActive(false);
+            }
+        }
     }
 }
 
