@@ -147,7 +147,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.9841926, y: 1}
+  m_Size: {x: 1.4, y: 2}
   m_Direction: 0
 --- !u!114 &7419168416794340183
 MonoBehaviour:
@@ -162,3 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  maxQueueWaitTime: 30
+  possibleOrders:
+  - Waffles
+  - Eggs
+  - Bacon
+  - Juice
+  currentOrder: 
