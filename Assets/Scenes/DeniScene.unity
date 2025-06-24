@@ -305,7 +305,7 @@ Transform:
   m_GameObject: {fileID: 282863919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.937, z: 0}
+  m_LocalPosition: {x: 6.3, y: -1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &667698571
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1065,7 +1065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 669602086290289800}
   speed: 1
-  Aim: {fileID: 901335341}
+  Aim: {fileID: 282863919}
   AimTransform: {fileID: 0}
 --- !u!61 &1438355751
 BoxCollider2D:
@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 1884189969}
   - component: {fileID: 1884189968}
   m_Layer: 5
-  m_Name: gameover
+  m_Name: healthtext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
