@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
+
     Rigidbody2D rb;
     public float speed = 5f;
     public Vector2 movement;
@@ -13,6 +15,7 @@ public class PlayerController : MonoBehaviour
     bool isWalking = false;
 
     Vector2 lastMoveDirection = Vector2.zero;
+
 
 
     void Start()
@@ -24,9 +27,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         processInput();
-
-
-
 
     }
 
@@ -58,34 +58,18 @@ public class PlayerController : MonoBehaviour
             Vector3 vector3 = new Vector3(lastMoveDirection.x, lastMoveDirection.y, 0);
             vector3 *= -1;
             Aim.rotation = Quaternion.LookRotation(Vector3.forward, vector3);
-        
 
 
-        } else if (moveHorizontal != 0 || moveVertical != 0)
+
+        }
+        else if (moveHorizontal != 0 || moveVertical != 0)
         {
             isWalking = true;
         }
-        
-
 
         movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         movement.Normalize();
-
-        
-
-        
-
-
-
     }
-
-
-
-
-
-
-
-
-
+    
 
 }
