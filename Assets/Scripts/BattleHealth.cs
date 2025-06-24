@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class BattleHealth : MonoBehaviour
 {
@@ -38,7 +40,7 @@ public class BattleHealth : MonoBehaviour
 
         // Display strikes visually
         if (heartCount == 3 && heart3 != null)
-            if (heartCount == 2 && heart2 != null) heart2.enabled = false;
+        if (heartCount == 2 && heart2 != null) heart2.enabled = false;
         if (heartCount == 1 && heart1 != null) heart1.enabled = false;
 
 
