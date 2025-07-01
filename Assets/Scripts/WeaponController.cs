@@ -13,6 +13,12 @@ public class WeaponController : MonoBehaviour
         {
             enemy.TakeDamage(damage);
         }
+        
+        Customer customer = collision.GetComponent<Customer>();
+        if (customer != null)
+        {
+            customer.TakeOrder();
+        }
     }
 
  
