@@ -7,22 +7,41 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
+    PlayerController playerController;
+    private SpriteRenderer spriteRenderer;
     public float moveSpeed = 2f;
-    private Table targetTable;
+    public Table targetTable;
     private bool isSeated = false;
     private bool inQueue = false;
-    private Vector3 targetPosition;
     private float queueWaitTime = 0f;
-    [SerializeField] private float maxQueueWaitTime = 15f;
+    private float orderWaitTime = 0f;
+    private float mealWaitTime = 0f;
+    private bool warnedLeavingSoon = false;
+
+    [SerializeField] private float maxOrderWaitTime = 30f;
+    [SerializeField] private float maxQueueWaitTime = 30f;
+    [SerializeField] private float maxMealWaitTime = 30f;
 
     [Header("Order System")]
     public string[] possibleOrders = { "Waffles", "Eggs", "Bacon", "Juice" };
     public string currentOrder;
     private bool orderGiven = false;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip leaveSound;
+
+    [SerializeField] private AudioClip orderSound;
+
+    [SerializeField] private AudioClip serveSound;
+
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         TryFindTable();
     }
 
@@ -38,9 +57,70 @@ public class Customer : MonoBehaviour
         {
             queueWaitTime += Time.deltaTime;
 
+            // Gradually change color toward red based on wait time
+            float t = Mathf.Clamp01(queueWaitTime / maxQueueWaitTime);
+            spriteRenderer.color = Color.Lerp(Color.green, Color.red, t);
+
+            // Play warning sound once when close to leaving
+            if (!warnedLeavingSoon && queueWaitTime >= maxQueueWaitTime - 5f)
+            {
+                audioSource.PlayOneShot(leaveSound);
+                Debug.Log("Customer is getting impatient and may leave soon.");
+                warnedLeavingSoon = true;
+            }
+
             if (queueWaitTime >= maxQueueWaitTime)
             {
                 LeaveQueue();
+            }
+            CheckForTable();
+        }
+
+        if (isSeated && orderGiven)
+        {
+            mealWaitTime += Time.deltaTime;
+
+            // Gradually change color toward red based on meal wait time
+            float t = Mathf.Clamp01(mealWaitTime / maxMealWaitTime);
+            spriteRenderer.color = Color.Lerp(Color.green, Color.red, t);
+
+            // Play warning sound once when close to leaving
+            if (!warnedLeavingSoon && mealWaitTime >= maxMealWaitTime - 5f)
+            {
+                audioSource.PlayOneShot(leaveSound);
+                Debug.Log("Customer is getting impatient and may leave soon.");
+                warnedLeavingSoon = true;
+            }
+
+            if (mealWaitTime >= maxMealWaitTime)
+            {
+                Debug.Log("Customer waited too long for their meal and left.");
+                GameManager.Instance.LoseLife(); // Lose a life
+                Destroy(gameObject); // Remove the customer from the scene
+            }
+        }
+
+        if (isSeated && !orderGiven)
+        {
+            orderWaitTime += Time.deltaTime;
+
+            // Gradually change color toward red based on order wait time
+            float t = Mathf.Clamp01(orderWaitTime / maxOrderWaitTime);
+            spriteRenderer.color = Color.Lerp(Color.green, Color.red, t);
+
+            // Play warning sound once when close to leaving
+            if (!warnedLeavingSoon && orderWaitTime >= maxOrderWaitTime - 5f)
+            {
+                audioSource.PlayOneShot(leaveSound);
+                Debug.Log("Customer is getting impatient and may leave soon.");
+                warnedLeavingSoon = true;
+            }
+
+            if (orderWaitTime >= maxOrderWaitTime)
+            {
+                Debug.Log("Customer waited too long for you to take their order and left.");
+                GameManager.Instance.LoseLife(); // Lose a life
+                Destroy(gameObject); // Remove the customer from the scene
             }
         }
     }
@@ -54,6 +134,7 @@ public class Customer : MonoBehaviour
         }
         else
         {
+
             JoinQueue();
         }
     }
@@ -64,7 +145,10 @@ public class Customer : MonoBehaviour
         targetTable.isOccupied = true;
         isSeated = false;
         inQueue = false;
-        targetPosition = targetTable.seatPoint.position;
+        warnedLeavingSoon = false; // Reset warning state
+        spriteRenderer.color = Color.green;
+        queueWaitTime = 0f; // Reset wait time
+        CustomerQueueManager.Instance.RemoveFromQueue(this); // Tell the queue manager
     }
 
     public void MoveToQueueSpot(Vector3 queueSpot)
@@ -89,15 +173,35 @@ public class Customer : MonoBehaviour
             inQueue = true;
             queueWaitTime = 0f;
             CustomerQueueManager.Instance.JoinQueue(this);
+            Debug.Log("Customer joined the queue.");
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Static; // Freezes all movement and physics
+            }
         }
     }
+
+    void CheckForTable()
+    {
+       Table table = TableManager.Instance.GetAvailableTable();
+        if (table != null)
+        {
+            AssignTable(table);
+        }
+        
+    }
+
     public void LeaveQueue()
     {
+
         Debug.Log("Customer waited too long and left.");
         inQueue = false;
         CustomerQueueManager.Instance.RemoveFromQueue(this); // Tell the queue manager
         GameManager.Instance.LoseLife(); // Lose a life
-        Destroy(gameObject); // Remove the customer
+        Destroy(gameObject); // Remove the customer from the scene
     }
 
 
@@ -123,11 +227,11 @@ public class Customer : MonoBehaviour
 
         if (rb != null)
         {
-            rb.velocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Static; // Freezes all movement and physics
         }
 
         GenerateOrder();
+
 
     }
 
@@ -137,16 +241,78 @@ public class Customer : MonoBehaviour
         orderGiven = false;
         Debug.Log("Customer ordered: " + currentOrder);
     }
-    
+
     // Is used when player takes customers' order
     public void TakeOrder()
     {
-        if (isSeated && !orderGiven)
-        {
-            Debug.Log("Order taken: " + currentOrder);
-            orderGiven = true;
-            OrderManager.Instance.AddOrder(currentOrder);  // Adds order to visible list when taken
-        }
+
+        Debug.Log("Order taken: " + currentOrder + " at table: " + targetTable.name);
+
+        audioSource.PlayOneShot(orderSound);
+
+        OrderManager.Instance.AddOrder(currentOrder, targetTable.name);  // Adds order to visible list when taken
+
+        spriteRenderer.color = Color.green; // Change color to indicate order taken
+
+        orderGiven = true; // Mark that the order has been given
+
     }
 
+    public void ServeMeal(string meal)
+    {
+        if (meal == currentOrder)
+        {
+            Debug.Log("Customer received their meal: " + meal);
+            spriteRenderer.color = Color.green; // Change color to indicate meal served
+            isSeated = false; // Customer is no longer seated
+            orderGiven = false; // Reset order given status
+            mealWaitTime = 0f; // Reset meal wait time
+            OrderManager.Instance.RemoveOrder(currentOrder, targetTable.name); // Remove order from the list
+            targetTable.isOccupied = false; // Mark the table as available again
+            GameManager.Instance.UpdateScore(10); // Update score for serving the meal
+            playerController.currentMeal = "Nothing"; // Reset player's current meal
+            GameManager.Instance.UpdateHoldUI(); // Update the UI to reflect the empty meal
+            StartCoroutine(DestroyAfterSound());
+        }
+        else if (meal == "Nothing")
+        {
+            Debug.Log("You aren't holding anything.");
+        }
+        else
+        {
+            Debug.Log("Incorrect meal served. Customer expected: " + currentOrder);
+        }
+
+
+    }
+
+    private IEnumerator DestroyAfterSound()
+{
+    if (serveSound != null && audioSource != null)
+    {
+        audioSource.PlayOneShot(serveSound);
+        yield return new WaitForSeconds(serveSound.length);
+    }
+    Destroy(gameObject);
 }
+
+    public void HandleInteraction()
+    {
+        if (isSeated && !orderGiven)
+        {
+
+            TakeOrder();
+
+        }
+        else if (isSeated && orderGiven)
+        {
+            ServeMeal(playerController.currentMeal);
+        }
+        else if (!isSeated)
+        {
+            Debug.Log("Customer is not seated yet.");
+        }
+    }
+}
+
+

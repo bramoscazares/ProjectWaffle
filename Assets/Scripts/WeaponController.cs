@@ -13,13 +13,43 @@ public class WeaponController : MonoBehaviour
         {
             enemy.TakeDamage(damage);
         }
-        
+
         Customer customer = collision.GetComponent<Customer>();
         if (customer != null)
         {
-            customer.TakeOrder();
+            customer.HandleInteraction();
+        }
+
+        WaffleStation waffleStation = collision.GetComponent<WaffleStation>();
+        if (waffleStation != null)
+        {
+            waffleStation.HandleWaffleStationInteraction();
+
+        }
+
+        BaconStation baconStation = collision.GetComponent<BaconStation>();
+        if (baconStation != null)
+        {
+            baconStation.HandleBaconStationInteraction();
+        }
+
+        EggsStation eggsStation = collision.GetComponent<EggsStation>();
+        if (eggsStation != null)
+        {
+            eggsStation.HandleEggsStationInteraction();
+        }
+
+        JuiceStation juiceStation = collision.GetComponent<JuiceStation>();
+        if (juiceStation != null)
+        {
+            juiceStation.HandleJuiceStationInteraction();
+        }
+
+        Trashcan trashcan = collision.GetComponent<Trashcan>();
+        if (trashcan != null)
+        {
+            trashcan.HandleTrashcanInteraction();
         }
     }
 
- 
 }
