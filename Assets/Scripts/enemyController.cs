@@ -14,6 +14,8 @@ public class enemyController : MonoBehaviour
     private bool isAttacking = false;
     private float atkDurarion = 0.3f;
     private float atkTimer = 0f;
+    private float coolDown = 2f;
+    private float coolDownTimer = 0f;
     void Start()
     {
         health = maxHealth;
@@ -37,7 +39,8 @@ public class enemyController : MonoBehaviour
 
         AimTransform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
-        if (distance < 1.5f)
+        coolDownTimer += Time.deltaTime;
+        if (distance < 1.5f && coolDownTimer >= coolDown)
         {
             AttackPlayer();
         }
@@ -46,6 +49,7 @@ public class enemyController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+
         if (health <= 0)
         {
             Destroy(gameObject);
@@ -57,7 +61,7 @@ public class enemyController : MonoBehaviour
         OnAttack();
 
     }
-    
+
 
     void OnAttack()
     {
@@ -65,6 +69,7 @@ public class enemyController : MonoBehaviour
         {
             Aim.SetActive(true);
             isAttacking = true;
+            coolDownTimer = 0f; //reset cool down
             player.GetComponent<BattleHealth>().TakeDamage(1);
             print("Player hit! 1 damage taken.");
 
@@ -81,8 +86,8 @@ public class enemyController : MonoBehaviour
             atkTimer += Time.deltaTime;
             if (atkTimer >= atkDurarion)
             {
-                atkTimer = 0;
-                isAttacking = false;
+                atkTimer = 3;
+                isAttacking = false; 
                 Aim.SetActive(false);
             }
         }
