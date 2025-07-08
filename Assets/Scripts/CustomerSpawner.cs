@@ -35,14 +35,14 @@ public class CustomerSpawner : MonoBehaviour
 
             SetTimeUntilSpawn();
         }
-        
+
     }
 
     private void SetTimeUntilSpawn()
     {
         timeUntilSpawn = Random.Range(minspawnTime, maxspawnTime);
     }
-    
+
     private bool CanSpawnCustomer()
     {
         var queueManager = CustomerQueueManager.Instance;
@@ -58,6 +58,19 @@ public class CustomerSpawner : MonoBehaviour
         int maxQueue = queueManager.queuePositions.Count;
 
         return queueSize < maxQueue;
+    }
+    
+    public void IncreaseSpawnRate()
+    {
+        if (maxspawnTime > 1f)
+        {
+            maxspawnTime -= 2f; // Decrease max spawn time to increase spawn rate
+        }
+        if (minspawnTime > 0.5f)
+        {
+            minspawnTime -= 2f; // Decrease min spawn time to increase spawn rate
+        }
+        SetTimeUntilSpawn(); // Reset the timer with the new spawn rates
     }
 
 }

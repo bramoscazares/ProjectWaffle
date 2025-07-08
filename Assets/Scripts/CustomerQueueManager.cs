@@ -18,13 +18,6 @@ public class CustomerQueueManager : MonoBehaviour
         waitingCustomers.Enqueue(customer);
         UpdateQueuePositions();
     }
-
-    public void LeaveQueue(Customer customer)
-    {
-        waitingCustomers = new Queue<Customer>(waitingCustomers);
-        UpdateQueuePositions();
-    }
-
     public void TrySeatNextCustomer()
     {
         if (waitingCustomers.Count == 0) return;
