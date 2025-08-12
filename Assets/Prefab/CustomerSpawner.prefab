@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5395914903571163368}
   m_Layer: 0
   m_Name: CustomerSpawner
-  m_TagString: Untagged
+  m_TagString: CustomerSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.0456, y: 6.5482, z: 0.20283484}
-  m_LocalScale: {x: 0.3679033, y: 0.34450784, z: 1}
+  m_LocalScale: {x: 0.20515713, y: 0.1995136, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: -37927839
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 46b037187e7cd32408b9a6407029000c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30309c30c2e7d2e45ab58f277ff96b1d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 7.5, y: 7.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

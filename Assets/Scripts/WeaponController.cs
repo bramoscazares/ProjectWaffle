@@ -11,6 +11,11 @@ public class WeaponController : MonoBehaviour
         enemyController enemy = collision.GetComponent<enemyController>();
         if (enemy != null)
         {
+            Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+            Vector2 knockbackDirection = (collision.transform.position - transform.position).normalized;
+            float knockbackForce = 10f; // Adjust this value
+
+            enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
             enemy.TakeDamage(damage);
         }
 

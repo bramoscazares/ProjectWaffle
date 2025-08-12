@@ -7,7 +7,10 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
+
     PlayerController playerController;
+
+    CustomerSpawner customerSpawner;
     private SpriteRenderer spriteRenderer;
     public float moveSpeed = 2f;
     public Table targetTable;
@@ -40,6 +43,7 @@ public class Customer : MonoBehaviour
     void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        customerSpawner = GameObject.FindGameObjectWithTag("CustomerSpawner").GetComponent<CustomerSpawner>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         TryFindTable();
@@ -95,8 +99,7 @@ public class Customer : MonoBehaviour
             if (mealWaitTime >= maxMealWaitTime)
             {
                 Debug.Log("Customer waited too long for their meal and left.");
-                GameManager.Instance.LoseLife(); // Lose a life
-                Destroy(gameObject); // Remove the customer from the scene
+                onCustomerDestroy();
             }
         }
 
@@ -119,8 +122,7 @@ public class Customer : MonoBehaviour
             if (orderWaitTime >= maxOrderWaitTime)
             {
                 Debug.Log("Customer waited too long for you to take their order and left.");
-                GameManager.Instance.LoseLife(); // Lose a life
-                Destroy(gameObject); // Remove the customer from the scene
+                onCustomerDestroy();
             }
         }
     }
@@ -186,12 +188,12 @@ public class Customer : MonoBehaviour
 
     void CheckForTable()
     {
-       Table table = TableManager.Instance.GetAvailableTable();
+        Table table = TableManager.Instance.GetAvailableTable();
         if (table != null)
         {
             AssignTable(table);
         }
-        
+
     }
 
     public void LeaveQueue()
@@ -287,14 +289,14 @@ public class Customer : MonoBehaviour
     }
 
     private IEnumerator DestroyAfterSound()
-{
-    if (serveSound != null && audioSource != null)
     {
-        audioSource.PlayOneShot(serveSound);
-        yield return new WaitForSeconds(serveSound.length);
+        if (serveSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(serveSound);
+            yield return new WaitForSeconds(serveSound.length);
+        }
+        Destroy(gameObject);
     }
-    Destroy(gameObject);
-}
 
     public void HandleInteraction()
     {
@@ -313,6 +315,24 @@ public class Customer : MonoBehaviour
             Debug.Log("Customer is not seated yet.");
         }
     }
+
+
+    private void onCustomerDestroy()
+    {
+        GameManager.Instance.LoseLife(); // Lose a life
+        // Initiate brawl by passing the customer's position to the spawner
+        
+        customerSpawner.initiateBrawl(transform.position); // Record the customer's position for the brawl
+        
+
+        Destroy(gameObject); // Remove the customer from the scene
+
+
+    }
+
+
+
+
 }
 
 

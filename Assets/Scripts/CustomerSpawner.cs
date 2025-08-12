@@ -7,6 +7,12 @@ public class CustomerSpawner : MonoBehaviour
 
     [SerializeField]
     private GameObject customerPrefab;
+    public GameObject enemyPrefab;
+
+    //Recorded position of a customer in game, that will get updated later.
+    private Vector2 customerPosition;
+
+
 
     [SerializeField]
     private float maxspawnTime;
@@ -16,25 +22,36 @@ public class CustomerSpawner : MonoBehaviour
 
     private float timeUntilSpawn;
 
+    public bool inBrawl = false;
+
     // Start is called before the first frame update
     void Awake()
     {
         SetTimeUntilSpawn();
+        // Ensure we are not in a brawl at the start
+        inBrawl = false;
     }
 
     void Update()
     {
-        timeUntilSpawn -= Time.deltaTime;
-
-        if (timeUntilSpawn <= 0)
+        if (!inBrawl)
         {
-            if (CanSpawnCustomer())
+            timeUntilSpawn -= Time.deltaTime;
+
+            if (timeUntilSpawn <= 0)
             {
-                Instantiate(customerPrefab, transform.position, Quaternion.identity);
+                if (CanSpawnCustomer())
+                {
+
+                    Instantiate(customerPrefab, transform.position, Quaternion.identity);
+
+                }
+
+                SetTimeUntilSpawn();
             }
 
-            SetTimeUntilSpawn();
         }
+
 
     }
 
@@ -59,7 +76,7 @@ public class CustomerSpawner : MonoBehaviour
 
         return queueSize < maxQueue;
     }
-    
+
     public void IncreaseSpawnRate()
     {
         if (maxspawnTime > 1f)
@@ -72,5 +89,20 @@ public class CustomerSpawner : MonoBehaviour
         }
         SetTimeUntilSpawn(); // Reset the timer with the new spawn rates
     }
+    
+    public void initiateBrawl(Vector2 position)
+    {
+        // Set the position of the brawl to the customer's position
+        customerPosition = position;
+
+        // Start the brawl
+        inBrawl = true;
+
+        Instantiate(enemyPrefab, customerPosition, Quaternion.identity);
+
+        // Optionally, you can instantiate a brawl manager or handle brawl logic here
+        Debug.Log("Brawl initiated at position: " + customerPosition);
+    }
+    
 
 }

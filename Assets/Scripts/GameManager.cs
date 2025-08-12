@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("Game UI")]
     [SerializeField]  public int lives = 3;
     public TextMeshProUGUI LivesText; // Assign in Inspector
+    public TextMeshProUGUI hpText; // Assign in Inspector
 
     public GameObject gameOverUI;
 

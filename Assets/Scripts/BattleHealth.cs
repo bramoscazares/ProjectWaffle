@@ -98,7 +98,7 @@ public class BattleHealth : MonoBehaviour
 
     void updateHealth()
     {
-        healthText.text = "Health: " + health.ToString();
+        healthText.text = "HP: " + health.ToString();
     }
     
 }

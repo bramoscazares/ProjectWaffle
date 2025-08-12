@@ -10,7 +10,7 @@ public class enemyController : MonoBehaviour
     float health, maxHealth = 3f;
 
     public GameObject Aim;
-    public Transform AimTransform;
+    Transform AimTransform;
     private bool isAttacking = false;
     private float atkDurarion = 0.3f;
     private float atkTimer = 0f;
@@ -18,6 +18,8 @@ public class enemyController : MonoBehaviour
     private float coolDownTimer = 0f;
     void Start()
     {
+        findPlayer();
+        //findAim();
         health = maxHealth;
         if (Aim != null)
         {
@@ -70,10 +72,10 @@ public class enemyController : MonoBehaviour
             Aim.SetActive(true);
             isAttacking = true;
             coolDownTimer = 0f; //reset cool down
-            player.GetComponent<BattleHealth>().TakeDamage(1);
+            player.GetComponent<HealthManager>().TakeDamage(1);
             print("Player hit! 1 damage taken.");
 
-            print("Player health: " + player.GetComponent<BattleHealth>().health);
+            print("Player health: " + player.GetComponent<HealthManager>().health);
 
         }
     }
@@ -87,10 +89,21 @@ public class enemyController : MonoBehaviour
             if (atkTimer >= atkDurarion)
             {
                 atkTimer = 3;
-                isAttacking = false; 
+                isAttacking = false;
                 Aim.SetActive(false);
             }
         }
     }
+
+
+    void findPlayer()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogError("Player not found!");
+        }
+    }
+
 }
 
