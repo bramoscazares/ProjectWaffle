@@ -322,7 +322,7 @@ public class Customer : MonoBehaviour
         GameManager.Instance.LoseLife(); // Lose a life
         // Initiate brawl by passing the customer's position to the spawner
         
-        customerSpawner.initiateBrawl(transform.position); // Record the customer's position for the brawl
+        //customerSpawner.initiateBrawl(transform.position); // Record the customer's position for the brawl
         
 
         Destroy(gameObject); // Remove the customer from the scene
